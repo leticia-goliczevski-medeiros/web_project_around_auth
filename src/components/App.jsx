@@ -1,5 +1,7 @@
 import '../blocks/page.css'
 import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom;'
+import Home from '../pages/Home.jsx'
 import Header from './Header/Header.jsx'
 import Main from './Main/Main.jsx';
 import Footer from './Footer/Footer.jsx'
@@ -8,6 +10,7 @@ import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
 import EditAvatar from './Main/components/Popup/EditAvatar/EditAvatar.jsx'
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import { Route } from 'react-router-dom';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
@@ -93,18 +96,25 @@ function App() {
     <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
       <div className="App">
         <div className="page">
-          <Header />
-          <Main 
-          onOpenPopup={handleOpenPopup} 
-          onClosePopup={handleClosePopup} 
-          popup={popup} 
-          newCardPopup={newCardPopup} 
-          editAvatarPopup={editAvatarPopup} 
-          editProfilePopup={editProfilePopup} 
-          cards={cards} 
-          onCardLike={handleCardLike} 
-          onCardDelete={handleCardDelete} />
-          <Footer />
+          <Routes>
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Home onOpenPopup={handleOpenPopup}
+                onClosePopup={handleClosePopup}
+                popup={popup}
+                newCardPopup={newCardPopup}
+                editAvatarPopup={editAvatarPopup}
+                editProfilePopup={editProfilePopup}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete} />
+              </ProtectedRoute>
+            } />
+        
+            <Route path="/signin" element={ <Login />} />
+            <Route path="/signup" element={ <Register />} />
+            
+          </Routes>
         </div>
       </div>
     </CurrentUserContext.Provider>
