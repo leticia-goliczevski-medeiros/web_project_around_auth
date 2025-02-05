@@ -50,9 +50,9 @@ export default function Main(props) {
       
       <section className="gallery">
         <ul className="gallery__cards">
-        {cards.map(card=> (
-          <Card card={card} key={card._id} onOpenPopup={onOpenPopup} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
-        ))}
+          {cards.map(card=> (
+            <Card card={card} key={card._id} onOpenPopup={onOpenPopup} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
+          ))}
         </ul>
       </section>
 

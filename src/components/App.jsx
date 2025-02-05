@@ -1,16 +1,12 @@
 import '../blocks/page.css'
 import { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom;'
-import Home from '../pages/Home.jsx'
-import Header from './Header/Header.jsx'
-import Main from './Main/Main.jsx';
-import Footer from './Footer/Footer.jsx'
+import { Routes, Route } from 'react-router-dom';
+import Home from '../pages/Home.jsx';
 import NewCard from './Main/components/Popup/NewCard/NewCard.jsx'
 import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
 import EditAvatar from './Main/components/Popup/EditAvatar/EditAvatar.jsx'
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { Route } from 'react-router-dom';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
@@ -98,7 +94,7 @@ function App() {
         <div className="page">
           <Routes>
             <Route path="/" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <Home onOpenPopup={handleOpenPopup}
                 onClosePopup={handleClosePopup}
                 popup={popup}
@@ -108,11 +104,11 @@ function App() {
                 cards={cards}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete} />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             } />
         
-            <Route path="/signin" element={ <Login />} />
-            <Route path="/signup" element={ <Register />} />
+            {/* <Route path="/signin" element={ <Login />} /> */}
+            {/* <Route path="/signup" element={ <Register />} /> */}
             
           </Routes>
         </div>

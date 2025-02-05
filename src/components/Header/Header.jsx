@@ -9,6 +9,8 @@ export default function Header() {
         src={logo}
         alt="Logo escrito 'Around the U.S.'"
       />
+
+      { isLoggedIn? < UserInfo /> : < Instruction /> }
     </header>
   )
 }
