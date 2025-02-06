@@ -1,7 +1,8 @@
 import '../../../../blocks/header.css';
+import { Link } from 'react-router-dom';
 
-export default function Header() {
+export default function Instruction() {
   return (
-    <p className='header__instruction'>Entrar</p>
+    <Link to="/signin" className='header__instruction'>Entrar</Link>
   )
 }

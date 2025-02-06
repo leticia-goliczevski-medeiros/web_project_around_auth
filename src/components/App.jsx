@@ -5,6 +5,7 @@ import Home from '../pages/Home.jsx';
 import NewCard from './Main/components/Popup/NewCard/NewCard.jsx'
 import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
 import EditAvatar from './Main/components/Popup/EditAvatar/EditAvatar.jsx'
+import Login from '../pages/Login.jsx';
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
@@ -35,8 +36,8 @@ function App() {
     api.updateProfilePicture(avatarLink).then((userObject)=> setCurrentUser(userObject))
   };
 
-  const editProfilePopup = { title: "Edit profile", children: <EditProfile onClosePopup={handleClosePopup}/> };
-  const editAvatarPopup = { title: "Edit avatar", children: <EditAvatar onClosePopup={handleClosePopup}/> };
+  const editProfilePopup = { title: "Editar perfil", children: <EditProfile onClosePopup={handleClosePopup}/> };
+  const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar onClosePopup={handleClosePopup}/> };
 
   const [cards, setCards] = useState([])
  
@@ -78,7 +79,7 @@ function App() {
     })
   }
 
-  const newCardPopup = { title: "New card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} onClosePopup={handleClosePopup}/> };
+  const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} onClosePopup={handleClosePopup}/> };
 
   useEffect(()=> {
       api
@@ -103,11 +104,12 @@ function App() {
                 editProfilePopup={editProfilePopup}
                 cards={cards}
                 onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete} />
+                onCardDelete={handleCardDelete} 
+                />
               // </ProtectedRoute>
             } />
         
-            {/* <Route path="/signin" element={ <Login />} /> */}
+            <Route path="/signin" element={ <Login />} />
             {/* <Route path="/signup" element={ <Register />} /> */}
             
           </Routes>
