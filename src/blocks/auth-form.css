@@ -46,6 +46,7 @@
   cursor: pointer;
 }
 .form__text {
+  margin: 15px auto 0;
   font-family: "Inter", Arial, sans-serif;
   font-size: 14px;
   line-height: 1.21;
@@ -53,4 +54,25 @@
 .form__link {
   text-decoration: none;
   color: #fff;
+}
+
+@media screen and (max-width: 720px) {
+  .form {
+    max-width: 260px;
+    padding: 40px 0px 42px;
+  }
+  .form__title {
+    font-size: 20px;
+  }
+  .form__inputs {
+    margin-bottom: 176px;
+  }
+  .form__submit-button {
+    font-size: 16px;
+    padding: 14px 35px;
+  }
+  .form__text {
+    margin: 20px auto 0;
+    font-size: 12px;
+  }
 }
