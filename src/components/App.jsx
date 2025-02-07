@@ -6,6 +6,7 @@ import NewCard from './Main/components/Popup/NewCard/NewCard.jsx'
 import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
 import EditAvatar from './Main/components/Popup/EditAvatar/EditAvatar.jsx'
 import Login from '../pages/Login.jsx';
+import Register from '../pages/Register.jsx';
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
@@ -110,7 +111,7 @@ function App() {
             } />
         
             <Route path="/signin" element={ <Login />} />
-            {/* <Route path="/signup" element={ <Register />} /> */}
+            <Route path="/signup" element={ <Register />} />
             
           </Routes>
         </div>

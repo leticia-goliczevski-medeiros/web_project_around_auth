@@ -1,9 +1,8 @@
 import '../../../../../blocks/auth-form.css';
 import { Link } from 'react-router-dom';
 
-export default function LoginForm({onClosePopup}) {
+export default function LoginForm() {
   return (
-    <>
       <form name='login-form'
           className="form"
           noValidate>
@@ -30,10 +29,7 @@ export default function LoginForm({onClosePopup}) {
         >
           Entrar
         </button>
-        <p className='form__text'>Ainda não é membro? <Link to="/register" className='form__link' >Inscreva-se aqui!</Link> </p>
-      </form>
-      
-    </>
-    
+        <p className='form__text'>Ainda não é membro? <Link to="/signup" className='form__link' >Inscreva-se aqui!</Link> </p>
+      </form> 
   )
 }
