@@ -1,6 +1,6 @@
 import '../blocks/page.css'
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Home from '../pages/Home.jsx';
 import NewCard from './Main/components/Popup/NewCard/NewCard.jsx'
 import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
@@ -11,6 +11,7 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
+import { checkToken } from '../utils/auth.js';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -91,6 +92,33 @@ function App() {
         setCards(cardsList);
       })
   }, [])
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem('UserIdentifier');
+
+    if (token) {
+      checkToken(token)
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        }
+        return Promise.reject(`Error: ${error.status}`);
+      })
+      .then((data) => {
+        setIsLoggedIn(true);
+        navigate("/")
+      })
+      .catch((error) => {
+        if (error.status == 400) {
+          console.log(`${error}. Token não fornecido ou fornecido em formato errado.`)
+        }
+        if (error.status == 401) {
+          console.log(`${error}. O token fornecido é inválido.`)
+        }
+      })
+    }
+  })
   
   return (
     <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
