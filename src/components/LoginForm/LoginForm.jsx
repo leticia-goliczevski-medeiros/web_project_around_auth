@@ -64,7 +64,6 @@ export default function LoginForm() {
             type="email"
             placeholder="Email"
             minLength="2"
-            maxLength="30"
             required
           />
           <input

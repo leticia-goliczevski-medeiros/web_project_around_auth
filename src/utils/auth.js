@@ -14,7 +14,7 @@ function authorize({password, email}) {
 }
 
 function register({password, email}) {
-  return fetch(`${BASE_URL}/signin`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
