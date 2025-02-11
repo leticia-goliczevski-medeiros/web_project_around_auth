@@ -24,7 +24,7 @@ export default function RegisterForm() {
       return;
     } 
 
-    register({password, email}
+    register({password, email})
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -40,12 +40,11 @@ export default function RegisterForm() {
           return
         }
       })
-    )
   }
 
   return (
       <form 
-        onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           name='register-form'
           className="form"
           noValidate>
