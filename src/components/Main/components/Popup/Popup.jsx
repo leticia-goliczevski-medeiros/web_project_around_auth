@@ -1,8 +1,10 @@
+import { useContext } from 'react';
+import { PopupContext } from '../../../../contexts/PopupContext';
 import '../../../../blocks/popup.css';
 import closeIcon from '../../../../images/close-icon.png';
 
-export default function Popup(props) {
-  const { onClose, title, children } = props;
+export default function Popup({title, children}) {
+  const { popup, setPopup } = useContext(PopupContext)
 
   return (
     <section className={`popup`}>
@@ -11,7 +13,7 @@ export default function Popup(props) {
         className="popup__close-icon"
         src={closeIcon}
         alt="Ícone de fechar."
-        onClick={onClose}
+        onClick={() => setPopup(null)}
       />
       {title && <h2 className="popup__title">{title}</h2>}
       {children}

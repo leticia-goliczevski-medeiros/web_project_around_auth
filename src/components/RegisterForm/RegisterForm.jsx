@@ -17,6 +17,8 @@ export default function RegisterForm() {
     setPassword(event.target.value);
   }
 
+  const loginPopup = {title: "Você está registrado!", children: <loginPopup/>}
+
   function handleSubmit(event) {
     event.preventDefault();
 

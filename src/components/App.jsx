@@ -16,6 +16,7 @@ import { checkToken } from '../utils/auth.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
+import { PopupContext } from '../contexts/PopupContext.js';
 
 
 function App() {
@@ -31,8 +32,8 @@ function App() {
   function handleClosePopup() {
     setPopup(null);
   }
-  const editProfilePopup = { title: "Editar perfil", children: <EditProfile onClosePopup={handleClosePopup}/> };
-  const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar onClosePopup={handleClosePopup}/> };
+  const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
+  const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
 
   function handleAddPlaceSubmit(name, link) {
     api.addCard(name, link)
@@ -41,7 +42,7 @@ function App() {
     })
   }
 
-  const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} onClosePopup={handleClosePopup}/> };
+  const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} /> };
 
   function handleUpdateUser(user) {
     api.saveProfileInfo(user).then((userObject)=> setCurrentUser(userObject))
@@ -142,53 +143,52 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
-      <IsLoggedInContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
-        <div className="App">
-          <div className="page">
-            <Routes>
-              <Route path="*"
-                element={
-                  isLoggedIn ? (
-                    <Navigate to="/" replace />
-                  ) : (
-                    <Navigate to="/signin" replace />
-                  )
-                }
-              />
-
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Home onOpenPopup={handleOpenPopup}
-                  onClosePopup={handleClosePopup}
-                  popup={popup}
-                  newCardPopup={newCardPopup}
-                  editAvatarPopup={editAvatarPopup}
-                  editProfilePopup={editProfilePopup}
-                  cards={cards}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}
-                  />
-                </ProtectedRoute>
-              } />
-
-              <Route path="/signin" element={ 
-                <ProtectedRoute anonymous>
-                  <Login />
-                </ProtectedRoute>
-              } />
-
-              <Route path="/signup" element={ 
-                <ProtectedRoute anonymous>
-                  <Register />
-                </ProtectedRoute>
-              } />
-        
-            </Routes>
+    <PopupContext.Provider value={{popup, setPopup}}>
+      <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
+        <IsLoggedInContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
+          <div className="App">
+            <div className="page">
+              <Routes>
+                <Route path="*"
+                  element={
+                    isLoggedIn ? (
+                      <Navigate to="/" replace />
+                    ) : (
+                      <Navigate to="/signin" replace />
+                    )
+                  }
+                />
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <Home onOpenPopup={handleOpenPopup}
+                    onClosePopup={handleClosePopup}
+                    popup={popup}
+                    newCardPopup={newCardPopup}
+                    editAvatarPopup={editAvatarPopup}
+                    editProfilePopup={editProfilePopup}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
+                    />
+                  </ProtectedRoute>
+                } />
+                <Route path="/signin" element={
+                  <ProtectedRoute anonymous>
+                    <Login />
+                  </ProtectedRoute>
+                } />
+                <Route path="/signup" element={
+                  <ProtectedRoute anonymous>
+                    <Register />
+                  </ProtectedRoute>
+                } />
+      
+              </Routes>
+            </div>
           </div>
-        </div>
-      </IsLoggedInContext.Provider>
-    </CurrentUserContext.Provider>
+        </IsLoggedInContext.Provider>
+      </CurrentUserContext.Provider>
+    </PopupContext.Provider>
   );
 }
 

@@ -4,10 +4,11 @@ import heartIcon from '../../../../images/heart-icon.png'
 import heartIconAcive from '../../../../images/heart-icon-active.png'
 import ImagePopup from '../Popup/ImagePopup/ImagePopup';
 import { useContext } from 'react';
-import { CurrentUserContext } from '../../../../contexts/CurrentUserContext';
+import { PopupContext } from '../../../../contexts/PopupContext';
+
 
 export default function Card(props) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { setPopup } = useContext(PopupContext);
   const {card} = props;
   const { name, link, isLiked } = props.card;
   const imageComponent = { children: 
@@ -16,13 +17,15 @@ export default function Card(props) {
   function handleLikeClick(card) {
     props.onCardLike(card)
   }
+
   function handleDeleteClick(card) {
     props.onCardDelete(card)
   }
+
   return (
     <li className="gallery__card" >
       <img className="gallery__card-image" src={link} 
-        onClick={()=> props.onOpenPopup(imageComponent)} alt={name} />
+        onClick={()=> setPopup(imageComponent)} alt={name} />
       <img
         onClick={()=> handleDeleteClick(card)}
         className="gallery__delete-icon"
@@ -37,8 +40,7 @@ export default function Card(props) {
             className="gallery__heart-icon"
             src={isLiked? heartIconAcive: heartIcon}
             alt="Ícone de coração."
-          />
-          
+          /> 
         </div>
       </div>
     </li>

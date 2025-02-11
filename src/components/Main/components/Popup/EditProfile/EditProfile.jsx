@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
 import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
+import { PopupContext } from "../../../../../contexts/PopupContext";
 
-export default function EditProfile(props) {
-  const userContext = useContext(CurrentUserContext); 
-  const { currentUser, handleUpdateUser } = userContext;
-
-  const { onClosePopup} = props;
+export default function EditProfile() {
+  const { currentUser, handleUpdateUser } = useContext(CurrentUserContext); 
+  const { setPopup } = useContext(PopupContext);
 
   const [name, setName] = useState(currentUser.name); 
   const [description, setDescription] = useState(currentUser.about); 
@@ -22,7 +21,7 @@ export default function EditProfile(props) {
     event.preventDefault(); 
 
     handleUpdateUser({ name, about: description }); 
-    onClosePopup()
+    setPopup(null);
   };
 
   return (

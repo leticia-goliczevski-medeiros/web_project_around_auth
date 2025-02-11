@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { PopupContext } from "../../../../../contexts/PopupContext";
 
-export default function NewCard(props) {
+export default function NewCard({onAddPlaceSubmit}) {
+  const { setPopup } = useContext(PopupContext);
 
   const [name, setName] = useState('')
   const [link, setLink] = useState('')
@@ -15,8 +17,8 @@ export default function NewCard(props) {
   function handleAddPlaceSubmit(event){
     event.preventDefault();
 
-    props.onAddPlaceSubmit(name, link);
-    props.onClosePopup()
+    onAddPlaceSubmit(name, link);
+    setPopup(null)
   }
 
   return (

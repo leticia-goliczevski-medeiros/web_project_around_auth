@@ -1,18 +1,18 @@
 import { useContext, useRef } from "react";
 import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
+import { PopupContext } from "../../../../../contexts/PopupContext";
 
-export default function EditAvatar(props) {
-  const userContext = useContext(CurrentUserContext); 
-  const { handleUpdateAvatar } = userContext;
-
-  const { onClosePopup } = props
+export default function EditAvatar() {
+  const { handleUpdateAvatar } = useContext(CurrentUserContext); 
+  const { setPopup } = useContext(PopupContext);
+  
   const avatarRef = useRef()
 
   function handleSubmit(event) {
     event.preventDefault();
   
     handleUpdateAvatar(avatarRef.current.value);
-    onClosePopup()
+    setPopup(null);
   }
 
   return (

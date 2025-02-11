@@ -6,16 +6,17 @@ import Card from './components/Card/Card.jsx'
 import Popup from './components/Popup/Popup.jsx'
 import {  useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
+import { PopupContext } from '../../contexts/PopupContext.js';
 
-export default function Main(props) {
+export default function Main({newCardPopup, editAvatarPopup, editProfilePopup, cards, onCardLike, onCardDelete}) {
+  
   const { currentUser } = useContext(CurrentUserContext);
-
-  const {onOpenPopup, onClosePopup, newCardPopup, editAvatarPopup, editProfilePopup, cards, onCardLike, onCardDelete} = props
+  const { popup, setPopup } = useContext(PopupContext);
 
   return (
     <main className='content'>
       <section className="profile">
-          <div className="profile__picture-container" onClick={() => onOpenPopup(editAvatarPopup)}>
+          <div className="profile__picture-container" onClick={() => setPopup(editAvatarPopup)}>
             <img
               className="profile__picture"
               src={currentUser.avatar}
@@ -34,12 +35,12 @@ export default function Main(props) {
                 className="profile__edit-icon"
                 src={editProfileIcon}
                 alt="Ícone de editar informações do perfil."
-                onClick={() => onOpenPopup(editProfilePopup)}
+                onClick={() => setPopup(editProfilePopup)}
               />
             </div>
             <p className="profile__description">{currentUser.about}</p>
           </div>
-          <button className="profile__add-button" onClick={() => onOpenPopup(newCardPopup)}>
+          <button className="profile__add-button" onClick={() => setPopup(newCardPopup)}>
             <img
               className="profile__add-button-plus-sign"
               src={addCardIcon}
@@ -51,14 +52,14 @@ export default function Main(props) {
       <section className="gallery">
         <ul className="gallery__cards">
           {cards.map(card=> (
-            <Card card={card} key={card._id} onOpenPopup={onOpenPopup} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
+            <Card card={card} key={card._id} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
           ))}
         </ul>
       </section>
 
-      {props.popup && (
-        <Popup onClose={onClosePopup} title={props.popup.title}>
-          {props.popup.children}
+      {popup && (
+        <Popup title={popup.title}>
+          {popup.children}
         </Popup>
       )}
     </main>
