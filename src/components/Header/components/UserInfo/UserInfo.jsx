@@ -6,7 +6,7 @@ export default function UserInfo() {
 
   function logout() {
     localStorage.removeItem("UserIdentifier");
-    navigate("/login");
+    navigate("/signin");
   }
 
   return (
