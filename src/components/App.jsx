@@ -10,9 +10,10 @@ import Register from '../pages/Register.jsx';
 import NewCard from './Main/components/Popup/NewCard/NewCard.jsx'
 import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
 import EditAvatar from './Main/components/Popup/EditAvatar/EditAvatar.jsx'
+import InfoTooltip from './Main/components/Popup/InfoTooltip/InfoTooltip.jsx';
 
 import { api } from '../utils/api.js';
-import { checkToken } from '../utils/auth.js';
+import { register, authorize, checkToken } from '../utils/auth.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
@@ -77,6 +78,56 @@ function App() {
     })
   }
 
+  function handleRegisterUser({password, email}) {
+    register({password, email})
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${error.status}`)
+      })
+      .then(() => {
+        let infoTooltip = {title: 'Parabéns! Você está registrado!', children: <InfoTooltip registerStataus={true} />, infoTooltip: true}
+
+        setPopup(infoTooltip)
+      })
+      .catch((error) => {
+        let infoTooltip = {title: 'Ops, algo deu errado! Por favor, tente novamente.', children: <InfoTooltip registerStataus={false} />, infoTooltip: true}
+
+        setPopup(infoTooltip);
+
+        if (error.status == 400) {
+          console.log(`${error}. Um dos campos não foi preenchido corretamente.`)
+          return
+        }
+      })
+  }
+
+  function handleLogin({password, email}) {
+    authorize({ password, email })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    })
+    .then((data)=> {
+      setIsLoggedIn(true);
+      localStorage.setItem("UserIdentifier", data.token);
+      navigate("/");
+    })
+    .catch((error) => {
+      if (error.status == 400) {
+        console.log(`${error}. Um ou mais campos não foram fornecidos.`)
+        return
+      }
+      if (error.status == 401) {
+        console.log(`${error}. Não foi possível encontrar o usuário com esse email.`)
+        return
+      }
+    }) 
+  }
+
   function getData() {
     api
     .getInitialCards()
@@ -119,8 +170,8 @@ function App() {
           setIsLoading(false);
         })
     } else {
-      navigate("/signin");
       setIsLoading(false)
+      navigate("/signin");
     }
   }, [])
 
@@ -130,9 +181,6 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  // setInterval(() => {
-  //   setIsLoading(false)
-  // }, 2000)
 
   if(isLoading) {
     return (
@@ -170,12 +218,12 @@ function App() {
                 } />
                 <Route path="/signin" element={
                   <ProtectedRoute anonymous>
-                    <Login />
+                    <Login handleLogin={handleLogin} />
                   </ProtectedRoute>
                 } />
                 <Route path="/signup" element={
                   <ProtectedRoute anonymous>
-                    <Register />
+                    <Register handleRegisterUser={handleRegisterUser} />
                   </ProtectedRoute>
                 } />
       

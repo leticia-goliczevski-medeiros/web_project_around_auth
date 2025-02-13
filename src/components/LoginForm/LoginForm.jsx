@@ -1,13 +1,8 @@
 import '../../blocks/auth-form.css';
-import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { authorize } from '../../utils/auth.js';
-import { IsLoggedInContext } from '../../contexts/IsLoggedInContext';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function LoginForm() {
-  const { setIsLoggedIn } = useContext(IsLoggedInContext);
-  const navigate = useNavigate();
-
+export default function LoginForm({handleLogin}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,28 +21,7 @@ export default function LoginForm() {
       return;
     } 
 
-    authorize({ password, email })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
-    })
-    .then((data)=> {
-      setIsLoggedIn(true);
-      localStorage.setItem("UserIdentifier", data.token);
-      navigate("/");
-    })
-    .catch((error) => {
-      if (error.status == 400) {
-        console.log(`${error}. Um ou mais campos não foram fornecidos.`)
-        return
-      }
-      if (error.status == 401) {
-        console.log(`${error}. Não foi possível encontrar o usuário com esse email.`)
-        return
-      }
-    }) 
+    handleLogin({password, email})
   };
 
   return (
