@@ -1,10 +1,13 @@
 import '../../blocks/auth-form.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import { register } from '../../utils/auth.js';
+import Popup from '../Main/components/Popup/Popup.jsx';
+import InfoTooltip from '../Main/components/Popup/InfoTooltip/InfoTooltip.jsx';
+import { PopupContext } from '../../contexts/PopupContext.js';
 
 export default function RegisterForm() {
-  const navigate = useNavigate();
+  const { popup, setPopup } = useContext(PopupContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
@@ -16,8 +19,6 @@ export default function RegisterForm() {
   function handlePasswordChange(event) {
     setPassword(event.target.value);
   }
-
-  const loginPopup = {title: "Você está registrado!", children: <loginPopup/>}
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -34,9 +35,15 @@ export default function RegisterForm() {
         return Promise.reject(`Error: ${error.status}`)
       })
       .then(() => {
-        navigate("/signin");
+        let infoTooltip = {title: 'Parabéns! Você está registrado!', children: <InfoTooltip registerStataus={true} />, infoTooltip: true}
+
+        setPopup(infoTooltip)
       })
       .catch((error) => {
+        let infoTooltip = {title: 'Ops, algo deu errado! Por favor, tente novamente.', children: <InfoTooltip registerStataus={false} />, infoTooltip: true}
+
+        setPopup(infoTooltip);
+
         if (error.status == 400) {
           console.log(`${error}. Um dos campos não foi preenchido corretamente.`)
           return
@@ -45,6 +52,7 @@ export default function RegisterForm() {
   }
 
   return (
+    <>
       <form 
           onSubmit={handleSubmit}
           name='register-form'
@@ -78,5 +86,12 @@ export default function RegisterForm() {
         </button>
         <p className='form__text'>Já é um membro? <Link to="/signin" className='form__link' >Faça o login aqui!</Link> </p>
       </form> 
+
+      {popup && (
+        <Popup title={popup.title} >
+          {popup.children}
+        </Popup>
+      )}
+    </>      
   )
 }

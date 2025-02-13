@@ -39,6 +39,16 @@
   color: #000000;
   margin: 0 0 54px 0;
 }
+.popup__title_info-tooltip {
+  margin: 0 auto 23px;
+  text-align: center;
+}
+.popup__image {
+  margin: 37px auto 32px;
+  display: block;
+  width: 120px;
+  height: 120px;
+}
 .popup__inputs {
   display: flex;
   flex-direction: column;
@@ -133,6 +143,12 @@
   .popup__title {
     font-size: 18px;
     margin: 0 0 76px 0;
+  }
+  .popup__title_info-tooltip {
+    margin: 0 auto 15px;
+  }
+  .popup__image {
+    margin: 25px auto 25px;
   }
   .popup__inputs {
     margin-bottom: 46px;

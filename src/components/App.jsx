@@ -26,12 +26,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading ] = useState(true);
 
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-  function handleClosePopup() {
-    setPopup(null);
-  }
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
 
@@ -121,8 +115,12 @@ function App() {
             console.log(`${error}. O token fornecido é inválido.`)
           }
         })
+        .finally(()=> {
+          setIsLoading(false);
+        })
     } else {
       navigate("/signin");
+      setIsLoading(false)
     }
   }, [])
 
@@ -132,9 +130,9 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  setInterval(() => {
-    setIsLoading(false)
-  }, 2000)
+  // setInterval(() => {
+  //   setIsLoading(false)
+  // }, 2000)
 
   if(isLoading) {
     return (
@@ -160,9 +158,7 @@ function App() {
                 />
                 <Route path="/" element={
                   <ProtectedRoute>
-                    <Home onOpenPopup={handleOpenPopup}
-                    onClosePopup={handleClosePopup}
-                    popup={popup}
+                    <Home 
                     newCardPopup={newCardPopup}
                     editAvatarPopup={editAvatarPopup}
                     editProfilePopup={editProfilePopup}

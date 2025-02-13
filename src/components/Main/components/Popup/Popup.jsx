@@ -15,8 +15,17 @@ export default function Popup({title, children}) {
         alt="Ícone de fechar."
         onClick={() => setPopup(null)}
       />
-      {title && <h2 className="popup__title">{title}</h2>}
-      {children}
+      {popup.infoTooltip ? (
+        <>
+          {children}
+          {title && <h2 className="popup__title popup__title_info-tooltip">{title}</h2>}
+        </>
+      ) : (
+        <>
+          {title && <h2 className="popup__title">{title}</h2>}
+          {children}
+        </>
+      )}
       </div>
     </section>
   )
