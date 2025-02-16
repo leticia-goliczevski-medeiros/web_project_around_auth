@@ -16,6 +16,9 @@
   color: #fff;
   text-decoration: none;
 }
+.header__instruction:hover {
+  opacity: 0.75;
+}
 .header__user-info {
   display: flex;
   column-gap: 56px;
@@ -29,12 +32,17 @@
 }
 .header__logout {
   color: #A9A9A9;
+  cursor: pointer;
 }
 .header__menu {
   display: none;
   width: 24px;
   cursor: pointer;
 }
+.header__menu:hover {
+  opacity: 0.75;
+}
+
 @media screen and (max-width: 1024px) {
   .header {
     max-width: 700px;

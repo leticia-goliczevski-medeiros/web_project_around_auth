@@ -5,15 +5,18 @@ import { UserEmailContext } from '../../../../contexts/UserEmailContext';
 import menuIcon from '../../../../images/menu.svg';
 import closeIcon from '../../../../images/small-close-icon.png'
 import { IsMenuOpenContext } from '../../../../contexts/IsMenuOpenContext';
+import { IsLoggedInContext } from '../../../../contexts/IsLoggedInContext';
 
 export default function UserInfo() {
   const { userEmail } = useContext(UserEmailContext);
   const {isMenuOpen, setIsMenuOpen} = useContext(IsMenuOpenContext);
+  const { setIsLoggedIn } = useContext(IsLoggedInContext)
 
   const navigate = useNavigate();
 
   function logout() {
     localStorage.removeItem("UserIdentifier");
+    setIsLoggedIn(false);
     navigate("/signin");
   }
  

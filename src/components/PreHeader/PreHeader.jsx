@@ -3,15 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import '../../blocks/pre-header.css'
 import { UserEmailContext } from '../../contexts/UserEmailContext.js';
 import { IsMenuOpenContext } from '../../contexts/IsMenuOpenContext.js';
+import { IsLoggedInContext } from '../../contexts/IsLoggedInContext.js';
 
 export default function PreHeader() {
   const { userEmail } = useContext(UserEmailContext);
   const { isMenuOpen } = useContext(IsMenuOpenContext);
+  const { setIsLoggedIn } = useContext(IsLoggedInContext)
 
   const navigate = useNavigate();
 
   function logout() {
     localStorage.removeItem("UserIdentifier");
+    setIsLoggedIn(false);
     navigate("/signin");
   }
 
