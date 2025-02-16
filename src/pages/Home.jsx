@@ -1,3 +1,4 @@
+import PreHeader from '../components/PreHeader/PreHeader';
 import Header from '../components/Header/Header';
 import Main from '../components/Main/Main';
 import Footer from '../components/Footer/Footer';
@@ -6,6 +7,7 @@ export default function Home({newCardPopup, editAvatarPopup, editProfilePopup, c
   
   return (
     <>
+      <PreHeader />
       <Header />
       <Main
       newCardPopup={newCardPopup}

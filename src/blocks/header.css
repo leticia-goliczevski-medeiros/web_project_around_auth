@@ -16,7 +16,25 @@
   color: #fff;
   text-decoration: none;
 }
-
+.header__user-info {
+  display: flex;
+  column-gap: 56px;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.2;
+}
+.header__user-email {
+  margin: 0;
+}
+.header__logout {
+  color: #A9A9A9;
+}
+.header__menu {
+  display: none;
+  width: 24px;
+  cursor: pointer;
+}
 @media screen and (max-width: 1024px) {
   .header {
     max-width: 700px;
@@ -37,5 +55,16 @@
   .header__instruction {
     font-size: 14px;
     line-height: 1.6;
+  }
+  .header__user-info {
+    display: none;
+    column-gap: 56px;
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+  .header__menu {
+    display: inline;
   }
 }

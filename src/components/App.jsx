@@ -19,6 +19,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
 import { PopupContext } from '../contexts/PopupContext.js';
 import { UserEmailContext } from '../contexts/UserEmailContext.js';
+import { IsMenuOpenContext } from '../contexts/IsMenuOpenContext.js';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userEmail, setUserEmail] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
@@ -136,6 +138,7 @@ function App() {
           }
         })
 
+
       navigate("/");
     })
     .catch((error) => {
@@ -176,8 +179,9 @@ function App() {
           }
           return Promise.reject(`Error: ${error.status}`);
         })
-        .then(() => {
+        .then((userData) => {
           setIsLoggedIn(true);
+          setUserEmail(userData.data.email);
           navigate("/");
         })
         .catch((error) => {
@@ -215,43 +219,45 @@ function App() {
       <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
         <UserEmailContext.Provider value={{userEmail, setUserEmail}}>
           <IsLoggedInContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
-            <div className="App">
-              <div className="page">
-                <Routes>
-                  <Route path="*"
-                    element={
-                      isLoggedIn ? (
-                        <Navigate to="/" replace />
-                      ) : (
-                        <Navigate to="/signin" replace />
-                      )
-                    }
-                  />
-                  <Route path="/" element={
-                    <ProtectedRoute>
-                      <Home
-                      newCardPopup={newCardPopup}
-                      editAvatarPopup={editAvatarPopup}
-                      editProfilePopup={editProfilePopup}
-                      cards={cards}
-                      onCardLike={handleCardLike}
-                      onCardDelete={handleCardDelete}
-                      />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/signin" element={
-                    <ProtectedRoute anonymous>
-                      <Login handleLogin={handleLogin} />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/signup" element={
-                    <ProtectedRoute anonymous>
-                      <Register handleRegisterUser={handleRegisterUser} />
-                    </ProtectedRoute>
-                  } />
-                </Routes>
+            <IsMenuOpenContext.Provider value={{isMenuOpen, setIsMenuOpen}}>
+              <div className="App">
+                <div className="page">
+                  <Routes>
+                    <Route path="*"
+                      element={
+                        isLoggedIn ? (
+                          <Navigate to="/" replace />
+                        ) : (
+                          <Navigate to="/signin" replace />
+                        )
+                      }
+                    />
+                    <Route path="/" element={
+                      <ProtectedRoute>
+                        <Home
+                        newCardPopup={newCardPopup}
+                        editAvatarPopup={editAvatarPopup}
+                        editProfilePopup={editProfilePopup}
+                        cards={cards}
+                        onCardLike={handleCardLike}
+                        onCardDelete={handleCardDelete}
+                        />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/signin" element={
+                      <ProtectedRoute anonymous>
+                        <Login handleLogin={handleLogin} />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/signup" element={
+                      <ProtectedRoute anonymous>
+                        <Register handleRegisterUser={handleRegisterUser} />
+                      </ProtectedRoute>
+                    } />
+                  </Routes>
+                </div>
               </div>
-            </div>
+            </IsMenuOpenContext.Provider>
           </IsLoggedInContext.Provider>
         </UserEmailContext.Provider>
       </CurrentUserContext.Provider>
