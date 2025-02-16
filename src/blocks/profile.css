@@ -117,6 +117,9 @@
     margin-right: 0;
     margin-bottom: 30px;
   }
+  .profile__picture-overlay-edit-icon {
+    left: 140px;
+  }
   .profile__information {
     margin-right: 0;
     margin-bottom: 36px;
