@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
 import Home from '../pages/Home.jsx';
 import Login from '../pages/Login.jsx';
 import Register from '../pages/Register.jsx';
+import Loading from '../pages/Loading.jsx';
 
 import NewCard from './Main/components/Popup/NewCard/NewCard.jsx'
 import EditProfile from './Main/components/Popup/EditProfile/EditProfile.jsx'
@@ -210,7 +211,7 @@ function App() {
 
   if(isLoading) {
     return (
-      <div>Loading</div>
+      <Loading />
     )
   }
 
