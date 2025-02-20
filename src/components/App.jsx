@@ -139,7 +139,6 @@ function App() {
           }
         })
 
-
       navigate("/");
     })
     .catch((error) => {
@@ -164,6 +163,7 @@ function App() {
     api.getUser()
     .then((userObject) => {
       setCurrentUser(userObject)
+      setIsLoading(false);
     })
   }
 
@@ -193,9 +193,7 @@ function App() {
             console.log(`${error}. O token fornecido é inválido.`)
           }
         })
-        .finally(()=> {
-          setIsLoading(false);
-        })
+        
     } else {
       setIsLoading(false)
       navigate("/signin");
@@ -246,14 +244,10 @@ function App() {
                       </ProtectedRoute>
                     } />
                     <Route path="/signin" element={
-                      <ProtectedRoute anonymous>
-                        <Login handleLogin={handleLogin} />
-                      </ProtectedRoute>
+                      <Login handleLogin={handleLogin} />
                     } />
                     <Route path="/signup" element={
-                      <ProtectedRoute anonymous>
-                        <Register handleRegisterUser={handleRegisterUser} />
-                      </ProtectedRoute>
+                      <Register handleRegisterUser={handleRegisterUser} />
                     } />
                   </Routes>
                 </div>

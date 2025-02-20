@@ -2,10 +2,10 @@ import { useContext } from 'react';
 import {IsLoggedInContext} from '../../contexts/IsLoggedInContext';
 import { Navigate } from 'react-router-dom';
 
-export default function ProtectedRoute({children, anonymous = false}) {
+export default function ProtectedRoute({children}) {
   const { isLoggedIn } = useContext(IsLoggedInContext);
 
-  if (!anonymous && !isLoggedIn) {
+  if (!isLoggedIn) {
     return <Navigate to="/signin" />
   }
 
