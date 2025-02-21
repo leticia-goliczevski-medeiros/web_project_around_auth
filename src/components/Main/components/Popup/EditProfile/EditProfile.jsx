@@ -1,4 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from "@hookform/error-message";
+
 import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 import { PopupContext } from "../../../../../contexts/PopupContext";
 
@@ -6,55 +9,54 @@ export default function EditProfile() {
   const { currentUser, handleUpdateUser } = useContext(CurrentUserContext); 
   const { setPopup } = useContext(PopupContext);
 
-  const [name, setName] = useState(currentUser.name); 
-  const [description, setDescription] = useState(currentUser.about); 
+  const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange", 
+    defaultValues: {
+      name: currentUser.name,
+      description: currentUser.about
+    }
+  });
 
-  function handleNameChange(event) {
-    setName(event.target.value); 
-  };
-
-  function handleDescriptionChange(event) {
-    setDescription(event.target.value); 
-  };
-
-  function handleSubmit(event) {
-    event.preventDefault(); 
-
+  function onSubmit(data) {
+    const { name, description } = data;
     handleUpdateUser({ name, about: description }); 
     setPopup(null);
   };
 
   return (
-    <form onSubmit={handleSubmit} name='edit-profile-popup'
+    <form onSubmit={handleSubmit(onSubmit)}                      name='edit-profile-popup'
         className="popup__form"
         noValidate>
       <div className="popup__inputs">
           <input
-            value={name}
-            onChange={handleNameChange}
+            name="name"
+            { ...register('name', {required: "Esse campo é obrigatório.", minLength: {
+              value: 2,
+              message: "O nome precisa ter no mínimo 2 caracteres."
+            }, maxLength: {
+              value: 30,
+              message: "O nome precisa ter no máximo 30 caracteres."
+            }}) }
             className="popup__input edit-profile-popup__input_name"
             type="text"
             placeholder="Nome"
-            minLength="2"
-            maxLength="40"
-            required
           />
-          <span
-            className="popup__input-error edit-profile-popup__input_name_error"
-          ></span>
+          <ErrorMessage errors={errors} name="name" render={({ message }) => <p className='popup__input-error popup__input-error_top'>{message}</p>} />
+          
           <input
-            value={description}
-            onChange={handleDescriptionChange}
+            name="description"
+            { ...register('description', {required: "Esse campo é obrigatório.", minLength: {
+              value: 2,
+              message: "A descrição precisa ter no mínimo 2 caracteres."
+            }, maxLength: {
+              value: 200,
+              message: "A descrição precisa ter no máximo 200 caracteres."
+            }}) }
             className="popup__input edit-profile-popup__input_about"
             type="text"
             placeholder="Sobre mim"
-            minLength="2"
-            maxLength="200"
-            required
           />
-          <span
-            className="popup__input-error edit-profile-popup__input_about_error"
-          ></span>
+          <ErrorMessage errors={errors} name="description" render={({ message }) => <p className='popup__input-error popup__input-error_bottom'>{message}</p>} />
+
           <button
             className="popup__submit-button edit-profile-popup__submit-button"
             type="submit"
@@ -63,6 +65,5 @@ export default function EditProfile() {
           </button>
         </div>
     </form>
-  
   )
 }

@@ -28,7 +28,7 @@ export default function NewCard({onAddPlaceSubmit}) {
             message: "O título precisa ter no mínimo 2 caracteres."
           }, maxLength: {
             value: 30,
-            message: "O título precisa ter no máximo 40 caracteres."
+            message: "O título precisa ter no máximo 30 caracteres."
           }}) }
           className="popup__input add-card-popup__input_title"
           type="text"
