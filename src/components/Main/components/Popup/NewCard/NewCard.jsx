@@ -1,53 +1,52 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from "@hookform/error-message";
+
 import { PopupContext } from "../../../../../contexts/PopupContext";
 
 export default function NewCard({onAddPlaceSubmit}) {
   const { setPopup } = useContext(PopupContext);
 
-  const [name, setName] = useState('')
-  const [link, setLink] = useState('')
+  const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
 
-  function handleNameChange(event) {
-    setName(event.target.value)
-  }
-  function handleLinkChange(event) {
-    setLink(event.target.value)
-  }
-
-  function handleAddPlaceSubmit(event){
-    event.preventDefault();
-
+  function handleAddPlaceSubmit(data){
+    const {name, link} = data;
     onAddPlaceSubmit(name, link);
     setPopup(null)
   }
 
   return (
-    <form onSubmit={handleAddPlaceSubmit} name='add-card-popup'
-        className="popup__form"
-        noValidate>
+    <form 
+      onSubmit={handleSubmit(handleAddPlaceSubmit)} name='add-card-popup'
+      className="popup__form"
+      noValidate>
       <div className="popup__inputs">
         <input
-        onChange={handleNameChange} value={name}
+          name="name"
+          { ...register('name', {required: "Esse campo é obrigatório.", minLength: {
+            value: 2,
+            message: "O título precisa ter no mínimo 2 caracteres."
+          }, maxLength: {
+            value: 30,
+            message: "O título precisa ter no máximo 40 caracteres."
+          }}) }
           className="popup__input add-card-popup__input_title"
           type="text"
           placeholder="Título"
-          minLength="2"
-          maxLength="30"
-          required
         />
-        <span
-          className="popup__input-error add-card-popup__input_title_error"
-        ></span>
+        <ErrorMessage errors={errors} name="name" render={({ message }) => <p className='popup__input-error popup__input-error_top'>{message}</p>} />
+        
         <input
-        onChange={handleLinkChange} value={link}
+          name="link"
+          { ...register('link', {required: "Esse campo é obrigatório.", pattern: {
+            value: /https?:\/\/(www\.)?.{1,}/,
+            message: 'Link inválido.'
+          }}) }
           className="popup__input add-card-popup__input_link"
           type="url"
           placeholder="Link de imagem"
-          required
         />
-        <span
-          className="popup__input-error add-card-popup__input_link_error"
-        ></span>
+        <ErrorMessage errors={errors} name="link" render={({ message }) => <p className='popup__input-error popup__input-error_bottom'>{message}</p>} />
     </div>
       <button
         className="popup__submit-button add-card-popup__submit-button"
@@ -56,6 +55,5 @@ export default function NewCard({onAddPlaceSubmit}) {
         Criar
       </button>
     </form>
-  
   )
 }
