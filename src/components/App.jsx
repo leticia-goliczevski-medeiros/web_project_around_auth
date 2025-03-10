@@ -192,6 +192,8 @@ function App() {
           if (error.status == 401) {
             console.log(`${error}. O token fornecido é inválido.`)
           }
+          setIsLoading(false)
+          navigate("/signin")
         })
         
     } else {
