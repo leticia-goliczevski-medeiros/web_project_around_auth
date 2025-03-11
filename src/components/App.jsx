@@ -1,5 +1,5 @@
 import '../blocks/page.css'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
@@ -17,20 +17,17 @@ import { api } from '../utils/api.js';
 import { register, authorize, checkToken } from '../utils/auth.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
-import { PopupContext } from '../contexts/PopupContext.js';
 import { UserEmailContext } from '../contexts/UserEmailContext.js';
-import { IsMenuOpenContext } from '../contexts/IsMenuOpenContext.js';
-
+import { PopupContext } from '../contexts/PopupContext.js';
+import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
-  const [cards, setCards] = useState([])
-  const [popup, setPopup] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { setCurrentUser } = useContext(CurrentUserContext);
+  const { setUserEmail } = useContext(UserEmailContext);
+  const { setPopup } = useContext(PopupContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
+  const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
@@ -43,14 +40,6 @@ function App() {
   }
 
   const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} /> };
-
-  function handleUpdateUser(user) {
-    api.saveProfileInfo(user).then((userObject)=> setCurrentUser(userObject))
-  };
-
-  function handleUpdateAvatar(avatarLink) {
-    api.updateProfilePicture(avatarLink).then((userObject)=> setCurrentUser(userObject))
-  };
  
   function handleCardLike(card) {
     if (card.isLiked) {
@@ -216,49 +205,39 @@ function App() {
   }
 
   return (
-    <PopupContext.Provider value={{popup, setPopup}}>
-      <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
-        <UserEmailContext.Provider value={{userEmail, setUserEmail}}>
-          <IsLoggedInContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
-            <IsMenuOpenContext.Provider value={{isMenuOpen, setIsMenuOpen}}>
-              <div className="App">
-                <div className="page">
-                  <Routes>
-                    <Route path="*"
-                      element={
-                        isLoggedIn ? (
-                          <Navigate to="/" replace />
-                        ) : (
-                          <Navigate to="/signin" replace />
-                        )
-                      }
-                    />
-                    <Route path="/" element={
-                      <ProtectedRoute>
-                        <Home
-                        newCardPopup={newCardPopup}
-                        editAvatarPopup={editAvatarPopup}
-                        editProfilePopup={editProfilePopup}
-                        cards={cards}
-                        onCardLike={handleCardLike}
-                        onCardDelete={handleCardDelete}
-                        />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/signin" element={
-                      <Login handleLogin={handleLogin} />
-                    } />
-                    <Route path="/signup" element={
-                      <Register handleRegisterUser={handleRegisterUser} />
-                    } />
-                  </Routes>
-                </div>
-              </div>
-            </IsMenuOpenContext.Provider>
-          </IsLoggedInContext.Provider>
-        </UserEmailContext.Provider>
-      </CurrentUserContext.Provider>
-    </PopupContext.Provider>
+    <div className="App">
+      <div className="page">
+        <Routes>
+          <Route path="*"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
+            }
+          />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home
+              newCardPopup={newCardPopup}
+              editAvatarPopup={editAvatarPopup}
+              editProfilePopup={editProfilePopup}
+              cards={cards}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              />
+            </ProtectedRoute>
+          } />
+          <Route path="/signin" element={
+            <Login handleLogin={handleLogin} />
+          } />
+          <Route path="/signup" element={
+            <Register handleRegisterUser={handleRegisterUser} />
+          } />
+        </Routes>
+      </div>
+    </div>
   );
 }
 
