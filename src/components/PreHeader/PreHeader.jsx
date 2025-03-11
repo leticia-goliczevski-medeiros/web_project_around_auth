@@ -1,6 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../blocks/pre-header.css'
+import '../../blocks/pre-header.css';
 import { UserEmailContext } from '../../contexts/UserEmailContext.js';
 import { IsMenuOpenContext } from '../../contexts/IsMenuOpenContext.js';
 import { IsLoggedInContext } from '../../contexts/IsLoggedInContext.js';

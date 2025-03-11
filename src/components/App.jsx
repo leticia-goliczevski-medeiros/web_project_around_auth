@@ -78,7 +78,7 @@ function App() {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject(`Error: ${error.status}`)
+        return Promise.reject(`Error: ${res.status}`)
       })
       .then(() => {
         let infoTooltip = {title: 'Parabéns! Você está registrado!', children: <InfoTooltip registerStataus={true} />, infoTooltip: true}
@@ -114,7 +114,7 @@ function App() {
           if (res.ok) {
             return res.json()
           }
-          return Promise.reject(`Error: ${error.status}`);
+          return Promise.reject(`Error: ${res.status}`);
         })
         .then((userData) => {
           setUserEmail(userData.data.email);
@@ -167,7 +167,7 @@ function App() {
           if (res.ok) {
             return res.json()
           }
-          return Promise.reject(`Error: ${error.status}`);
+          return Promise.reject(`Error: ${res.status}`);
         })
         .then((userData) => {
           setIsLoggedIn(true);
