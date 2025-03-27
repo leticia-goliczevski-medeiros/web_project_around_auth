@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
+import validator from "validator";
 
 import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 import { PopupContext } from "../../../../../contexts/PopupContext";
@@ -25,10 +26,12 @@ export default function EditAvatar() {
       <div className="popup__inputs">
         <input
           name="link"
-          { ...register('link', {required: "Esse campo é obrigatório.", pattern: {
-            value: /https?:\/\/(www\.)?.{1,}/,
-            message: 'Link inválido.'
-          }}) }
+          { ...register('link', {
+            required: "Esse campo é obrigatório.",
+            validate: {
+              isURL: (v)=> validator.isURL(v) || "É necessário um link válido."
+            } 
+          })}
           className="popup__input update-profile-picture-popup__input_picture"
           type="url"
           placeholder="Link da foto"

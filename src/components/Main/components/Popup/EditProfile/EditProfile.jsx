@@ -29,13 +29,17 @@ export default function EditProfile() {
       <div className="popup__inputs">
           <input
             name="name"
-            { ...register('name', {required: "Esse campo é obrigatório.", minLength: {
-              value: 2,
-              message: "O nome precisa ter no mínimo 2 caracteres."
-            }, maxLength: {
-              value: 30,
-              message: "O nome precisa ter no máximo 30 caracteres."
-            }}) }
+            { ...register('name', {
+              required: "Esse campo é obrigatório.", 
+              minLength: {
+                value: 2,
+                message: "O nome precisa ter no mínimo 2 caracteres."
+              }, 
+              maxLength: {
+                value: 30,
+                message: "O nome precisa ter no máximo 30 caracteres."
+              }
+            })}
             className="popup__input edit-profile-popup__input_name"
             type="text"
             placeholder="Nome"
@@ -44,13 +48,17 @@ export default function EditProfile() {
           
           <input
             name="description"
-            { ...register('description', {required: "Esse campo é obrigatório.", minLength: {
-              value: 2,
-              message: "A descrição precisa ter no mínimo 2 caracteres."
-            }, maxLength: {
-              value: 200,
-              message: "A descrição precisa ter no máximo 200 caracteres."
-            }}) }
+            { ...register('description', {
+              required: "Esse campo é obrigatório.", 
+              minLength: {
+                value: 2,
+                message: "A descrição precisa ter no mínimo 2 caracteres."
+              }, 
+              maxLength: {
+                value: 30,
+                message: "A descrição precisa ter no máximo 30 caracteres."
+              }
+            })}
             className="popup__input edit-profile-popup__input_about"
             type="text"
             placeholder="Sobre mim"

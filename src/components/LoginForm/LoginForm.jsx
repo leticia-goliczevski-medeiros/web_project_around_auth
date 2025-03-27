@@ -2,6 +2,7 @@ import '../../blocks/auth-form.css';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
+import validator from "validator";
 
 export default function LoginForm({handleLogin}) {
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
@@ -21,16 +22,12 @@ export default function LoginForm({handleLogin}) {
         <div className="form__inputs">
           <input
             name="email"
-            { ...register('email', {required: "Esse campo é obrigatório.", minLength: {
-              value: 2,
-              message: "O email precisa ter no mínimo 2 caracteres."
-            }, maxLength: {
-              value: 40,
-              message: "O email precisa ter no máximo 40 caracteres."
-            }, pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              message: 'Formato de email inválido.'
-            }}) }
+            { ...register('email', {
+              required: "Esse campo é obrigatório.", 
+              validate: {
+                isEmail: (v)=> validator.isEmail(v) || "É necessário um email válido."
+              }
+            })}
             className="form__input login-form__input_email"
             type="email"
             placeholder="Email"
@@ -40,13 +37,9 @@ export default function LoginForm({handleLogin}) {
 
           <input
             name="password"
-            { ...register('password', {required: "Esse campo é obrigatório.", minLength: {
-              value: 2,
-              message: "A senha precisa ter no mínimo 2 caracteres."
-            }, maxLength: {
-              value: 40,
-              message: "A senha precisa ter no máximo 40 caracteres."
-            }}) } 
+            { ...register('password', {
+              required: "Esse campo é obrigatório."
+            })} 
             className="form__input login-form__input_password"
             type="password"
             placeholder="Senha"
