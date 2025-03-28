@@ -68,7 +68,7 @@ function App() {
   function handleCardDelete(card) {
     api.deleteCard(card._id)
     .then(() => {
-      setCards((state) => state.filter((currentCard) => currentCard._id !== card._id));
+      setCards((cards) => cards.filter((currentCard) => currentCard._id !== card._id));
     })
   }
 
@@ -144,7 +144,7 @@ function App() {
 
   function getData() {
     api
-    .getInitialCards()
+    .getCards()
     .then((cardsList) => {
       setCards(cardsList);
     })

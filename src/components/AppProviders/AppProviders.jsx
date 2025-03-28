@@ -16,7 +16,7 @@ export default function AppProviders({children}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function handleUpdateUser(user) {
-    api.saveProfileInfo(user).then((userObject)=> setCurrentUser(userObject))
+    api.updateProfileInfo(user).then((userObject)=> setCurrentUser(userObject))
   };
 
   function handleUpdateAvatar(avatarLink) {
