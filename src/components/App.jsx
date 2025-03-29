@@ -14,12 +14,13 @@ import EditAvatar from './Main/components/Popup/EditAvatar/EditAvatar.jsx'
 import InfoTooltip from './Main/components/Popup/InfoTooltip/InfoTooltip.jsx';
 
 import { api } from '../utils/api.js';
-import { register, authorize, checkToken } from '../utils/auth.js';
+import { register, login } from '../utils/auth.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { UserEmailContext } from '../contexts/UserEmailContext.js';
 import { PopupContext } from '../contexts/PopupContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
+import { TokenContext } from '../contexts/TokenContext.js';
 
 function App() {
   const { setCurrentUser } = useContext(CurrentUserContext);
@@ -28,6 +29,7 @@ function App() {
   const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { token, setToken } = useContext(TokenContext);
 
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
@@ -98,7 +100,7 @@ function App() {
   }
 
   function handleLogin({password, email}) {
-    authorize({ password, email })
+    login({ password, email })
     .then((res) => {
       if (res.ok) {
         return res.json();
@@ -108,16 +110,17 @@ function App() {
     .then((data)=> {
       setIsLoggedIn(true);
       localStorage.setItem("UserIdentifier", data.token);
+      setToken(data.token);
 
-      checkToken(data.token)
+      api.getUser()
         .then((res) => {
           if (res.ok) {
             return res.json()
           }
           return Promise.reject(`Error: ${res.status}`);
         })
-        .then((userData) => {
-          setUserEmail(userData.data.email);
+        .then((userObject) => {
+          setUserEmail(userObject.email);
         })
         .catch((error) => {
           if (error.status == 400) {
@@ -159,36 +162,28 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('UserIdentifier');
-
-    if (token) {
-      checkToken(token)
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(`Error: ${res.status}`);
-        })
-        .then((userData) => {
-          setIsLoggedIn(true);
-          setUserEmail(userData.data.email);
-          navigate("/");
-        })
-        .catch((error) => {
-          if (error.status == 400) {
-            console.log(`${error}. Token não fornecido ou fornecido em formato errado.`)
-          }
-          if (error.status == 401) {
-            console.log(`${error}. O token fornecido é inválido.`)
-          }
-          setIsLoading(false)
-          navigate("/signin")
-        })
-        
-    } else {
-      setIsLoading(false)
-      navigate("/signin");
-    }
+    api.getUser()
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((userObject) => {
+        setIsLoggedIn(true);
+        setUserEmail(userObject.email);
+        navigate("/");
+      })
+      .catch((error) => {
+        if (error.status == 400) {
+          console.log(`${error}. Token não fornecido ou fornecido em formato errado.`)
+        }
+        if (error.status == 401) {
+          console.log(`${error}. O token fornecido é inválido.`)
+        }
+        setIsLoading(false)
+        navigate("/signin")
+      })
   }, [])
 
   useEffect(() => {

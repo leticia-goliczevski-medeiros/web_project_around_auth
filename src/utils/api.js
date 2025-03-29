@@ -1,3 +1,8 @@
+import { useContext } from "react";
+import { TokenContext } from "../contexts/TokenContext";
+
+const { token } = useContext(TokenContext);
+
 class API {
   constructor({ makeRequest, headers }) {
     this._makeRequest = makeRequest;
@@ -115,7 +120,7 @@ export const api = new API({
     }
   },
   headers: {
-    authorization: "46bfb3be-dbce-4d6f-9db9-127f775222d9",
+    "Authorization" : `Bearer ${token}`,
     "Content-Type": "application/json",
   },
 });
