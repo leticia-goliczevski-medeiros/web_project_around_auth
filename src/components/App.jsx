@@ -29,7 +29,7 @@ function App() {
   const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { token, setToken } = useContext(TokenContext);
+  const { setToken } = useContext(TokenContext);
 
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };

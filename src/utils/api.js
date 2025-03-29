@@ -1,7 +1,4 @@
-import { useContext } from "react";
-import { TokenContext } from "../contexts/TokenContext";
-
-const { token } = useContext(TokenContext);
+const token = localStorage.getItem("UserIdentifier");
 
 class API {
   constructor({ makeRequest, headers }) {
