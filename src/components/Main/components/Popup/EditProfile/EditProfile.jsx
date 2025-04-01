@@ -6,7 +6,7 @@ import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 import { PopupContext } from "../../../../../contexts/PopupContext";
 
 export default function EditProfile() {
-  const { currentUser, handleUpdateUser } = useContext(CurrentUserContext); 
+  const { currentUser, handleUserUpdate } = useContext(CurrentUserContext); 
   const { setPopup } = useContext(PopupContext);
 
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange", 
@@ -18,7 +18,7 @@ export default function EditProfile() {
 
   function onSubmit(data) {
     const { name, description } = data;
-    handleUpdateUser({ name, about: description }); 
+    handleUserUpdate({ name, about: description }); 
     setPopup(null);
   };
 

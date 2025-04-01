@@ -74,7 +74,7 @@ function App() {
     })
   }
 
-  function handleRegisterUser({password, email}) {
+  function handleUserRegister({password, email}) {
     register({password, email})
       .then((res) => {
         if (res.ok) {
@@ -225,10 +225,10 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/signin" element={
-            <Login handleLogin={handleLogin} />
+            <Login onLoginHandle={handleLogin} />
           } />
           <Route path="/signup" element={
-            <Register handleRegisterUser={handleRegisterUser} />
+            <Register onUserRegister={handleUserRegister} />
           } />
         </Routes>
       </div>

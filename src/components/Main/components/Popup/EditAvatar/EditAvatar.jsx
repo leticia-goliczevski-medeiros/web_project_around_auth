@@ -7,14 +7,14 @@ import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 import { PopupContext } from "../../../../../contexts/PopupContext";
 
 export default function EditAvatar() {
-  const { handleUpdateAvatar } = useContext(CurrentUserContext); 
+  const { handleAvatarUpdate } = useContext(CurrentUserContext); 
   const { setPopup } = useContext(PopupContext);
   
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
 
   function onSubmit(data) {
     const { link } = data;
-    handleUpdateAvatar(link);
+    handleAvatarUpdate(link);
     setPopup(null);
   }
 

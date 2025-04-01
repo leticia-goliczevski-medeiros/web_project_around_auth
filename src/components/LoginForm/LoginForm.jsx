@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
 import validator from "validator";
 
-export default function LoginForm({handleLogin}) {
+export default function LoginForm({onLoginHandle}) {
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
 
   function onSubmit(data) {
     const {password, email} = data;
-    handleLogin({password, email})
+    onLoginHandle({password, email})
   };
 
   return (

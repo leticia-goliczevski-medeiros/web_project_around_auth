@@ -17,18 +17,18 @@ export default function AppProviders({children}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState('');
 
-  function handleUpdateUser(user) {
+  function handleUserUpdate(user) {
     api.updateProfileInfo(user).then((userObject)=> setCurrentUser(userObject))
   };
 
-  function handleUpdateAvatar(avatarLink) {
+  function handleAvatarUpdate(avatarLink) {
     api.updateProfilePicture(avatarLink).then((userObject)=> setCurrentUser(userObject))
   };
   
   return (
     <TokenContext.Provider value={{token, setToken}}>
       <PopupContext.Provider value={{popup, setPopup}}>
-        <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, handleUpdateUser, handleUpdateAvatar }}>
+        <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, handleUserUpdate, handleAvatarUpdate }}>
           <UserEmailContext.Provider value={{userEmail, setUserEmail}}>
             <IsLoggedInContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
               <IsMenuOpenContext.Provider value={{isMenuOpen, setIsMenuOpen}}>

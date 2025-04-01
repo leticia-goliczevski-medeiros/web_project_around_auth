@@ -9,13 +9,13 @@ import Popup from '../Main/components/Popup/Popup.jsx';
 
 import { PopupContext } from '../../contexts/PopupContext.js';
 
-export default function RegisterForm({handleRegisterUser}) {
+export default function RegisterForm({onUserRegister}) {
   const { popup } = useContext(PopupContext);
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
 
   function onSubmit(data) {
     const {password, email} = data;
-    handleRegisterUser({password, email})
+    onUserRegister({password, email})
   }
 
   return (
