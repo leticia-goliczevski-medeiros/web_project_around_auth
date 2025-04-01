@@ -37,8 +37,9 @@ function App() {
   function handleAddPlaceSubmit(name, link) {
     api.addCard(name, link)
     .then((addedCard) => {
-      setCards([addedCard, ...cards])
+      setCards([addedCard, ...cards]);
     })
+    .catch((error) => console.log(error));
   }
 
   const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} /> };
@@ -54,6 +55,7 @@ function App() {
           })
         })
       })
+      .catch((error) => console.log(error))
     } else {
       api
       .addCardLike(card._id)
@@ -64,6 +66,7 @@ function App() {
           })
         })
       })
+      .catch((error) => console.log(error));
     }
   }
 
@@ -72,6 +75,7 @@ function App() {
     .then(() => {
       setCards((cards) => cards.filter((currentCard) => currentCard._id !== card._id));
     })
+    .catch((error) => console.log(error));
   }
 
   function handleUserRegister({password, email}) {
@@ -80,7 +84,10 @@ function App() {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject(`Error: ${res.status}`)
+
+        return res.json().then((errorData) => {
+          return Promise.reject(errorData.message || `Erro na requisição. ${res.status}`);
+        });
       })
       .then(() => {
         let infoTooltip = {title: 'Parabéns! Você está registrado!', children: <InfoTooltip registerStataus={true} />, infoTooltip: true}
@@ -88,14 +95,10 @@ function App() {
         setPopup(infoTooltip)
       })
       .catch((error) => {
+        console.log(error);
         let infoTooltip = {title: 'Ops, algo deu errado! Por favor, tente novamente.', children: <InfoTooltip registerStataus={false} />, infoTooltip: true}
 
         setPopup(infoTooltip);
-
-        if (error.status == 500) {
-          console.log(`Erro no servidor. ${error}`);
-          return
-        }
       })
   }
 
@@ -105,7 +108,10 @@ function App() {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error: ${res.status}`);
+      
+      return res.json().then((errorData) => {
+        return Promise.reject(errorData.message || `Erro na requisição. ${res.status}`);
+      });
     })
     .then((data)=> {
       setIsLoggedIn(true);
@@ -113,36 +119,14 @@ function App() {
       setToken(data.token);
 
       api.getUser()
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(`Error: ${res.status}`);
-        })
         .then((userObject) => {
           setUserEmail(userObject.email);
         })
-        .catch((error) => {
-          if (error.status == 400) {
-            console.log(`${error}. Token não fornecido ou fornecido em formato errado.`)
-          }
-          if (error.status == 401) {
-            console.log(`${error}. O token fornecido é inválido.`)
-          }
-        })
+        .catch((error) => console.log(error));
 
       navigate("/");
     })
-    .catch((error) => {
-      if (error.status == 400) {
-        console.log(`${error}. Um ou mais campos não foram fornecidos.`)
-        return
-      }
-      if (error.status == 401) {
-        console.log(`${error}. Não foi possível encontrar o usuário com esse email.`)
-        return
-      }
-    }) 
+    .catch((error) => console.log(error)); 
   }
 
   function getData() {
@@ -151,36 +135,27 @@ function App() {
     .then((cardsList) => {
       setCards(cardsList);
     })
+    .catch((error) => console.log(error));
 
     api.getUser()
     .then((userObject) => {
       setCurrentUser(userObject)
       setIsLoading(false);
     })
+    .catch((error) => console.log(error));
   }
 
   const navigate = useNavigate();
 
   useEffect(() => {
     api.getUser()
-      .then((res) => {
-        if (res.ok) {
-          return res.json()
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
       .then((userObject) => {
         setIsLoggedIn(true);
         setUserEmail(userObject.email);
         navigate("/");
       })
       .catch((error) => {
-        if (error.status == 400) {
-          console.log(`${error}. Token não fornecido ou fornecido em formato errado.`)
-        }
-        if (error.status == 401) {
-          console.log(`${error}. O token fornecido é inválido.`)
-        }
+        console.log(error)
         setIsLoading(false)
         navigate("/signin")
       })

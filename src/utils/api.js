@@ -108,12 +108,16 @@ export const api = new API({
   makeRequest: async (endpoint, requestOptions)=> {
     try {
       const res = await fetch(`https://around-api.pt-br.tripleten-services.com/v1/${endpoint}`, requestOptions);
+
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error: ${res.status}`);
+
+      const errorData = await res.json();
+      return Promise.reject(errorData.message || `Erro na requisição. ${res.status}`);
+
     } catch (error) {
-      console.log(error);
+      return Promise.reject(error);
     }
   },
   headers: {

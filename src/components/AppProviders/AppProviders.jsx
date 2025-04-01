@@ -18,11 +18,15 @@ export default function AppProviders({children}) {
   const [token, setToken] = useState('');
 
   function handleUserUpdate(user) {
-    api.updateProfileInfo(user).then((userObject)=> setCurrentUser(userObject))
+    api.updateProfileInfo(user)
+    .then((userObject)=> setCurrentUser(userObject))
+    .catch((error) => console.log(error));
   };
 
   function handleAvatarUpdate(avatarLink) {
-    api.updateProfilePicture(avatarLink).then((userObject)=> setCurrentUser(userObject))
+    api.updateProfilePicture(avatarLink).
+    then((userObject)=> setCurrentUser(userObject))
+    .catch((error) => console.log(error));
   };
   
   return (
