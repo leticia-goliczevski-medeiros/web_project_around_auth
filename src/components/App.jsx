@@ -92,8 +92,8 @@ function App() {
 
         setPopup(infoTooltip);
 
-        if (error.status == 400) {
-          console.log(`${error}. Um dos campos não foi preenchido corretamente.`)
+        if (error.status == 500) {
+          console.log(`Erro no servidor. ${error}`);
           return
         }
       })
