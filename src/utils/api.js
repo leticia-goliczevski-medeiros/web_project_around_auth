@@ -107,7 +107,7 @@ class API {
 export const api = new API({
   makeRequest: async (endpoint, requestOptions)=> {
     try {
-      const res = await fetch(`https://around-api.pt-br.tripleten-services.com/v1/${endpoint}`, requestOptions);
+      const res = await fetch(`http://localhost:3000/${endpoint}`, requestOptions);
 
       if (res.ok) {
         return res.json();
