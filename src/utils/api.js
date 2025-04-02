@@ -1,28 +1,32 @@
-const token = localStorage.getItem("UserIdentifier");
-
 class API {
   constructor({ makeRequest, headers }) {
     this._makeRequest = makeRequest;
     this._headers = headers;
   }
 
-  getUser() {
+  getUser(token) {
     const endpoint = 'users/me';
 
     const requestOptions = {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      },
     }
 
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  updateProfileInfo(userObject) {
+  updateProfileInfo(userObject, token) {
     const endpoint = 'users/me';
     
     const requestOptions = {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      },
       body: JSON.stringify({
         name: userObject.name,
         about: userObject.about,
@@ -32,35 +36,44 @@ class API {
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  updateProfilePicture(avatar) {
+  updateProfilePicture(avatar, token) {
     const endpoint = `users/me/avatar`;
 
     const requestOptions = {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      },
       body: JSON.stringify({ avatar }),
     }
 
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  getCards() {
+  getCards(token) {
     const endpoint = 'cards';
 
     const requestOptions = {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      }
     }
 
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  addCard(name, link) {
+  addCard(name, link, token) {
     const endpoint = 'cards';
 
     const requestOptions = {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      },
       body: JSON.stringify({
         name,
         link,
@@ -70,34 +83,43 @@ class API {
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  deleteCard(cardId) {
+  deleteCard(cardId, token) {
     const endpoint = `cards/${cardId}`;
 
     const requestOptions = {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      },
     }
 
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  addCardLike(cardId) {
+  addCardLike(cardId, token) {
     const endpoint = `cards/${cardId}/likes`;
 
     const requestOptions = {
       method: "PUT",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      }
     }
 
     return this._makeRequest(endpoint, requestOptions)
   }
 
-  removeCardLike(cardId) {
+  removeCardLike(cardId, token) {
     const endpoint = `cards/${cardId}/likes`;
     
     const requestOptions = {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        "Authorization" : `Bearer ${token}`
+      }
     }
 
     return this._makeRequest(endpoint, requestOptions)
@@ -121,7 +143,6 @@ export const api = new API({
     }
   },
   headers: {
-    "Authorization" : `Bearer ${token}`,
     "Content-Type": "application/json",
   },
 });

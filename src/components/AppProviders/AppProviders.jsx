@@ -17,14 +17,14 @@ export default function AppProviders({children}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState('');
 
-  function handleUserUpdate(user) {
-    api.updateProfileInfo(user)
+  function handleUserUpdate(user, token) {
+    api.updateProfileInfo(user, token)
     .then((userObject)=> setCurrentUser(userObject))
     .catch((error) => console.log(error));
   };
 
-  function handleAvatarUpdate(avatarLink) {
-    api.updateProfilePicture(avatarLink).
+  function handleAvatarUpdate(avatarLink, token) {
+    api.updateProfilePicture(avatarLink, token).
     then((userObject)=> setCurrentUser(userObject))
     .catch((error) => console.log(error));
   };

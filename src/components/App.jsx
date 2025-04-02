@@ -29,13 +29,13 @@ function App() {
   const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { setToken } = useContext(TokenContext);
+  const { token, setToken } = useContext(TokenContext);
 
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
 
   function handleAddPlaceSubmit(name, link) {
-    api.addCard(name, link)
+    api.addCard(name, link, token)
     .then((addedCard) => {
       setCards([addedCard, ...cards]);
     })
@@ -44,10 +44,10 @@ function App() {
 
   const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} /> };
  
-  function handleCardLike(card) {
+  function handleCardLike(card, token) {
     if (card.isLiked) {
       api
-      .removeCardLike(card._id)
+      .removeCardLike(card._id, token)
       .then((updatedCard) => {
         setCards((cards) => {
           return cards.map((currentCard) => {
@@ -58,7 +58,7 @@ function App() {
       .catch((error) => console.log(error))
     } else {
       api
-      .addCardLike(card._id)
+      .addCardLike(card._id, token)
       .then((updatedCard) => {
         setCards((cards) => {
           return cards.map((currentCard) => {
@@ -70,8 +70,8 @@ function App() {
     }
   }
 
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
+  function handleCardDelete(card, token) {
+    api.deleteCard(card._id, token)
     .then(() => {
       setCards((cards) => cards.filter((currentCard) => currentCard._id !== card._id));
     })
@@ -118,7 +118,7 @@ function App() {
       localStorage.setItem("UserIdentifier", data.token);
       setToken(data.token);
 
-      api.getUser()
+      api.getUser(token)
         .then((userObject) => {
           setUserEmail(userObject.email);
         })
@@ -131,24 +131,24 @@ function App() {
 
   const getData = useCallback(() => {
     api
-    .getCards()
+    .getCards(token)
     .then((cardsList) => {
       setCards(cardsList);
     })
     .catch((error) => console.log(error));
 
-    api.getUser()
+    api.getUser(token)
     .then((userObject) => {
       setCurrentUser(userObject)
       setIsLoading(false);
     })
     .catch((error) => console.log(error));
-  }, [setCurrentUser])
+  }, [setCurrentUser, token])
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.getUser()
+    api.getUser(token)
       .then((userObject) => {
         setIsLoggedIn(true);
         setUserEmail(userObject.email);
@@ -159,7 +159,7 @@ function App() {
         setIsLoading(false)
         navigate("/signin")
       })
-  }, [setIsLoggedIn, setUserEmail, navigate])
+  }, [setIsLoggedIn, setUserEmail, navigate, token])
 
   useEffect(() => {
     if (isLoggedIn) {
