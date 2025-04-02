@@ -1,5 +1,5 @@
 import '../blocks/page.css'
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx';
@@ -129,7 +129,7 @@ function App() {
     .catch((error) => console.log(error)); 
   }
 
-  function getData() {
+  const getData = useCallback(() => {
     api
     .getCards()
     .then((cardsList) => {
@@ -143,7 +143,7 @@ function App() {
       setIsLoading(false);
     })
     .catch((error) => console.log(error));
-  }
+  }, [setCurrentUser])
 
   const navigate = useNavigate();
 
@@ -159,13 +159,13 @@ function App() {
         setIsLoading(false)
         navigate("/signin")
       })
-  }, [])
+  }, [setIsLoggedIn, setUserEmail, navigate])
 
   useEffect(() => {
     if (isLoggedIn) {
       getData();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, getData]);
 
 
   if(isLoading) {
