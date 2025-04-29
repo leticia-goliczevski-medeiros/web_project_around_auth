@@ -143,23 +143,27 @@ function App() {
       setIsLoading(false);
     })
     .catch((error) => console.log(error));
-  }, [setCurrentUser, token])
+  }, [setCurrentUser, token]);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const getUserInfo = useCallback(() => {
     api.getUser(token)
-      .then((userObject) => {
-        setIsLoggedIn(true);
-        setUserEmail(userObject.email);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error)
-        setIsLoading(false)
-        navigate("/signin")
-      })
-  }, [setIsLoggedIn, setUserEmail, navigate, token])
+    .then((userObject) => {
+      setIsLoggedIn(true);
+      setUserEmail(userObject.email);
+      navigate("/");
+    })
+    .catch((error) => {
+      console.log(error);
+      setIsLoading(false);
+      navigate("/signin");
+    })
+  },[setIsLoggedIn, setUserEmail, token])
+
+  useEffect(() => {
+    getUserInfo();
+  }, [getUserInfo])
 
   useEffect(() => {
     if (isLoggedIn) {
