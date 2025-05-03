@@ -1,24 +1,23 @@
+import '../../../../blocks/header.css';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../../blocks/header.css'
-import { UserEmailContext } from '../../../../contexts/UserEmailContext';
+
 import menuIcon from '../../../../images/menu.svg';
-import closeIcon from '../../../../images/small-close-icon.png'
+import closeIcon from '../../../../images/small-close-icon.png';
+
+import { UserEmailContext } from '../../../../contexts/UserEmailContext';
 import { IsMenuOpenContext } from '../../../../contexts/IsMenuOpenContext';
 import { IsLoggedInContext } from '../../../../contexts/IsLoggedInContext';
-import { TokenContext } from '../../../../contexts/TokenContext';
 
 export default function UserInfo() {
   const { userEmail } = useContext(UserEmailContext);
   const {isMenuOpen, setIsMenuOpen} = useContext(IsMenuOpenContext);
   const { setIsLoggedIn } = useContext(IsLoggedInContext);
-  const { setToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
 
   function logout() {
     localStorage.removeItem("UserIdentifier");
-    setToken('');
     setIsLoggedIn(false);
     navigate("/signin");
   }

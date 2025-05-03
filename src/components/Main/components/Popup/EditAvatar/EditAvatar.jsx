@@ -6,15 +6,19 @@ import validator from "validator";
 import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 import { PopupContext } from "../../../../../contexts/PopupContext";
 
+import { getTokenFromLocalStorage } from "../../../../../utils/getToken";
+
 export default function EditAvatar() {
   const { handleAvatarUpdate } = useContext(CurrentUserContext); 
   const { setPopup } = useContext(PopupContext);
   
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
 
+  const token = getTokenFromLocalStorage();
+
   function onSubmit(data) {
     const { link } = data;
-    handleAvatarUpdate(link);
+    handleAvatarUpdate(link, token);
     setPopup(null);
   }
 

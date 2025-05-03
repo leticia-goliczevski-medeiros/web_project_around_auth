@@ -4,10 +4,12 @@ import { ErrorMessage } from "@hookform/error-message";
 
 import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 import { PopupContext } from "../../../../../contexts/PopupContext";
+import { getTokenFromLocalStorage } from "../../../../../utils/getToken";
 
 export default function EditProfile() {
   const { currentUser, handleUserUpdate } = useContext(CurrentUserContext); 
   const { setPopup } = useContext(PopupContext);
+  const token = getTokenFromLocalStorage();
 
   const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange", 
     defaultValues: {
@@ -18,7 +20,7 @@ export default function EditProfile() {
 
   function onSubmit(data) {
     const { name, description } = data;
-    handleUserUpdate({ name, about: description }); 
+    handleUserUpdate({ name, about: description }, token); 
     setPopup(null);
   };
 

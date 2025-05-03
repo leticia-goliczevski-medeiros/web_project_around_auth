@@ -15,12 +15,12 @@ import InfoTooltip from './Main/components/Popup/InfoTooltip/InfoTooltip.jsx';
 
 import { api } from '../utils/api.js';
 import { register, login } from '../utils/auth.js';
+import { getTokenFromLocalStorage } from '../utils/getToken.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { UserEmailContext } from '../contexts/UserEmailContext.js';
 import { PopupContext } from '../contexts/PopupContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
-import { TokenContext } from '../contexts/TokenContext.js';
 
 function App() {
   const { setCurrentUser } = useContext(CurrentUserContext);
@@ -29,7 +29,7 @@ function App() {
   const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { token, setToken } = useContext(TokenContext);
+  const token = getTokenFromLocalStorage();
 
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Editar avatar", children: <EditAvatar /> };
@@ -114,63 +114,67 @@ function App() {
       });
     })
     .then((data)=> {
-      setIsLoggedIn(true);
       localStorage.setItem("UserIdentifier", data.token);
-      setToken(data.token);
 
-      api.getUser(token)
+      api.getUser(data.token)
         .then((userObject) => {
+          setIsLoggedIn(true);
           setUserEmail(userObject.email);
+          setCurrentUser(userObject);
+          navigate("/");
         })
-        .catch((error) => console.log(error));
-
-      navigate("/");
+        .catch((error) => console.log(error))
+        
+      api
+        .getCards(data.token)
+        .then((cardsList) => {
+          setCards(cardsList);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     })
-    .catch((error) => console.log(error)); 
+    .catch((error) => console.log(error))
+    .finally(()=> setIsLoading(false)); 
   }
 
-  const getData = useCallback(() => {
+  const navigate = useNavigate();
+
+  const getUserInfo = useCallback(() => {
+    const token = localStorage.getItem('UserIdentifier');
+
+    if(!token) {
+      setIsLoading(false);
+      return
+    }
+
+    api.getUser(token)
+    .then((userObject) => {
+      setIsLoggedIn(true);
+      setUserEmail(userObject.email);
+      setCurrentUser(userObject);
+    })
+    .catch((error) => {
+      console.log(error);
+      localStorage.removeItem('UserIdentifier');
+      navigate("/signin");
+    })
+    .finally(()=> setIsLoading(false));
+
     api
     .getCards(token)
     .then((cardsList) => {
       setCards(cardsList);
     })
-    .catch((error) => console.log(error));
-
-    api.getUser(token)
-    .then((userObject) => {
-      setCurrentUser(userObject)
-      setIsLoading(false);
-    })
-    .catch((error) => console.log(error));
-  }, [setCurrentUser, token]);
-
-  const navigate = useNavigate();
-
-  const getUserInfo = useCallback(() => {
-    api.getUser(token)
-    .then((userObject) => {
-      setIsLoggedIn(true);
-      setUserEmail(userObject.email);
-      navigate("/");
-    })
     .catch((error) => {
       console.log(error);
-      setIsLoading(false);
-      navigate("/signin");
     })
-  },[setIsLoggedIn, setUserEmail, token])
+    .finally(()=> setIsLoading(false))
+  },[setIsLoggedIn, setUserEmail, navigate, token])
 
   useEffect(() => {
     getUserInfo();
   }, [getUserInfo])
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      getData();
-    }
-  }, [isLoggedIn, getData]);
-
 
   if(isLoading) {
     return (

@@ -5,9 +5,9 @@ import { IsLoggedInContext } from '../../contexts/IsLoggedInContext.js';
 import { PopupContext } from '../../contexts/PopupContext.js';
 import { UserEmailContext } from '../../contexts/UserEmailContext.js';
 import { IsMenuOpenContext } from '../../contexts/IsMenuOpenContext.js';
-import { TokenContext } from '../../contexts/TokenContext.js';
 
 import { api } from '../../utils/api.js';
+import { getTokenFromLocalStorage } from '../../utils/getToken.js';
 
 export default function AppProviders({children}) {
   const [popup, setPopup] = useState(null);
@@ -15,12 +15,11 @@ export default function AppProviders({children}) {
   const [userEmail, setUserEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [token, setToken] = useState('');
 
   function handleUserUpdate(user, token) {
     api.updateProfileInfo(user, token)
     .then((userObject)=> setCurrentUser(userObject))
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(error, token));
   };
 
   function handleAvatarUpdate(avatarLink, token) {
@@ -30,7 +29,6 @@ export default function AppProviders({children}) {
   };
   
   return (
-    <TokenContext.Provider value={{token, setToken}}>
       <PopupContext.Provider value={{popup, setPopup}}>
         <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, handleUserUpdate, handleAvatarUpdate }}>
           <UserEmailContext.Provider value={{userEmail, setUserEmail}}>
@@ -42,6 +40,5 @@ export default function AppProviders({children}) {
           </UserEmailContext.Provider>
         </CurrentUserContext.Provider>
       </PopupContext.Provider>
-    </TokenContext.Provider>
   )
 }

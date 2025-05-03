@@ -1,17 +1,22 @@
 import '../../../../blocks/gallery.css';
-import deleteIcon from '../../../../images/delete-icon.png'
-import heartIcon from '../../../../images/heart-icon.png'
-import heartIconAcive from '../../../../images/heart-icon-active.png'
-import ImagePopup from '../Popup/ImagePopup/ImagePopup';
 import { useContext } from 'react';
+
+import deleteIcon from '../../../../images/delete-icon.png';
+import heartIcon from '../../../../images/heart-icon.png';
+import heartIconAcive from '../../../../images/heart-icon-active.png';
+
+import ImagePopup from '../Popup/ImagePopup/ImagePopup';
+
 import { PopupContext } from '../../../../contexts/PopupContext';
-import { TokenContext } from '../../../../contexts/TokenContext';
+
+import { getTokenFromLocalStorage } from '../../../../utils/getToken';
 
 export default function Card(props) {
   const { setPopup } = useContext(PopupContext);
   const {card} = props;
   const { name, link, isLiked } = props.card;
-  const { token } = useContext(TokenContext);
+  
+  const token = getTokenFromLocalStorage();
 
   const imageComponent = { children: 
     <ImagePopup card={props.card}/>}
