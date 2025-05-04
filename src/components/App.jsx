@@ -23,7 +23,7 @@ import { PopupContext } from '../contexts/PopupContext.js';
 import { IsLoggedInContext } from '../contexts/IsLoggedInContext.js';
 
 function App() {
-  const { setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { setUserEmail } = useContext(UserEmailContext);
   const { setPopup } = useContext(PopupContext);
   const { isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
@@ -45,7 +45,7 @@ function App() {
   const newCardPopup = { title: "Novo card", children: <NewCard onAddPlaceSubmit={handleAddPlaceSubmit} /> };
  
   function handleCardLike(card, token) {
-    if (card.isLiked) {
+    if (card.likes.some(user => user._id === currentUser._id)) {
       api
       .removeCardLike(card._id, token)
       .then((updatedCard) => {

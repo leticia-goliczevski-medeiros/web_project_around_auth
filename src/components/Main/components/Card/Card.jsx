@@ -16,7 +16,7 @@ export default function Card(props) {
   const { setPopup } = useContext(PopupContext);
   const { currentUser } = useContext(CurrentUserContext);
   const {card} = props;
-  const { name, link, isLiked } = props.card;
+  const { name, link } = props.card;
   
   const token = getTokenFromLocalStorage();
 
@@ -35,7 +35,7 @@ export default function Card(props) {
     <li className="gallery__card" >
       <img className="gallery__card-image" src={link} 
         onClick={()=> setPopup(imageComponent)} alt={name} />
-        {card.owner === currentUser._id && 
+        {card.owner._id === currentUser._id && 
         <img
           onClick={()=> handleDeleteClick(card, token)}
           className="gallery__delete-icon"
@@ -48,7 +48,7 @@ export default function Card(props) {
           <img
             onClick={()=> handleLikeClick(card, token)}
             className="gallery__heart-icon"
-            src={isLiked? heartIconAcive: heartIcon}
+            src={card.likes.some(user => user._id === currentUser._id)? heartIconAcive : heartIcon}
             alt="Ícone de coração."
           /> 
         </div>

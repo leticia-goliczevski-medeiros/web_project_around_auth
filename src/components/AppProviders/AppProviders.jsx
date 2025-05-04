@@ -7,7 +7,6 @@ import { UserEmailContext } from '../../contexts/UserEmailContext.js';
 import { IsMenuOpenContext } from '../../contexts/IsMenuOpenContext.js';
 
 import { api } from '../../utils/api.js';
-import { getTokenFromLocalStorage } from '../../utils/getToken.js';
 
 export default function AppProviders({children}) {
   const [popup, setPopup] = useState(null);
