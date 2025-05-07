@@ -18,6 +18,7 @@ export default function UserInfo() {
 
   function logout() {
     localStorage.removeItem("UserIdentifier");
+    localStorage.setItem("CurrentUser", "{}");
     setIsLoggedIn(false);
     navigate("/signin");
   }

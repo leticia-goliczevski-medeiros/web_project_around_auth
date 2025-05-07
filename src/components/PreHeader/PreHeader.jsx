@@ -15,6 +15,7 @@ export default function PreHeader() {
 
   function logout() {
     localStorage.removeItem("UserIdentifier");
+    localStorage.setItem("CurrentUser", "{}");
     setIsLoggedIn(false);
     navigate("/signin");
   }

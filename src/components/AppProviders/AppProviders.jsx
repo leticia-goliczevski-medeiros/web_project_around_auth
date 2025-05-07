@@ -10,20 +10,31 @@ import { api } from '../../utils/api.js';
 
 export default function AppProviders({children}) {
   const [popup, setPopup] = useState(null);
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(() => {
+    return JSON.parse(localStorage.getItem("CurrentUser"))
+  });
   const [userEmail, setUserEmail] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = localStorage.getItem('UserIdentifier')
+    return !!token
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function handleUserUpdate(user, token) {
     api.updateProfileInfo(user, token)
-    .then((userObject)=> setCurrentUser(userObject))
+    .then((userObject)=> {
+      setCurrentUser(userObject);
+      localStorage.setItem("CurrentUser", JSON.stringify(userObject));
+    })
     .catch((error) => console.log(error, token));
   };
 
   function handleAvatarUpdate(avatarLink, token) {
     api.updateProfilePicture(avatarLink, token).
-    then((userObject)=> setCurrentUser(userObject))
+    then((userObject)=> {
+      setCurrentUser(userObject);
+      localStorage.setItem("CurrentUser", JSON.stringify(userObject));
+    })
     .catch((error) => console.log(error));
   };
   

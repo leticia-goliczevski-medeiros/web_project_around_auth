@@ -121,6 +121,7 @@ function App() {
           setIsLoggedIn(true);
           setUserEmail(userObject.email);
           setCurrentUser(userObject);
+          localStorage.setItem("CurrentUser", JSON.stringify(userObject));
           navigate("/");
         })
         .catch((error) => console.log(error))
@@ -153,6 +154,7 @@ function App() {
       setIsLoggedIn(true);
       setUserEmail(userObject.email);
       setCurrentUser(userObject);
+      localStorage.setItem("CurrentUser", JSON.stringify(userObject));
     })
     .catch((error) => {
       console.log(error);
