@@ -1,9 +1,12 @@
-import '../../blocks/header.css'
-import logo from '../../images/around.png';
-import UserInfo from './components/UserInfo/UserInfo';
-import Instruction from './components/Instruction/Instruction';
-import { IsLoggedInContext } from '../../contexts/IsLoggedInContext';
+import '../../blocks/header.css';
 import { useContext } from 'react';
+
+import logo from '../../images/around.png';
+
+import UserInfo from './UserInfo/UserInfo';
+import Instruction from './Instruction/Instruction';
+
+import { IsLoggedInContext } from '../../contexts/IsLoggedInContext';
 
 export default function Header() {
   const { isLoggedIn } = useContext(IsLoggedInContext);

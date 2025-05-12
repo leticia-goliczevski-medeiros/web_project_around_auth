@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
 import validator from "validator";
 
-import { PopupContext } from "../../../../../contexts/PopupContext";
+import { PopupContext } from "../../../contexts/PopupContext";
 
 export default function NewCard({onAddPlaceSubmit}) {
   const { setPopup } = useContext(PopupContext);
@@ -13,7 +13,7 @@ export default function NewCard({onAddPlaceSubmit}) {
   function handleAddPlaceSubmit(data){
     const {name, link} = data;
     onAddPlaceSubmit(name, link);
-    setPopup(null)
+    setPopup(null);
   }
 
   return (
@@ -54,7 +54,7 @@ export default function NewCard({onAddPlaceSubmit}) {
           placeholder="Link de imagem"
         />
         <ErrorMessage errors={errors} name="link" render={({ message }) => <p className='popup__input-error popup__input-error_bottom'>{message}</p>} />
-    </div>
+      </div>
       <button
         className="popup__submit-button add-card-popup__submit-button"
         type="submit"

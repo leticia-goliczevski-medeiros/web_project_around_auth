@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import {IsLoggedInContext} from '../../contexts/IsLoggedInContext';
 import { Navigate } from 'react-router-dom';
+
+import {IsLoggedInContext} from '../../contexts/IsLoggedInContext';
 
 export default function ProtectedRoute({children}) {
   const { isLoggedIn } = useContext(IsLoggedInContext);

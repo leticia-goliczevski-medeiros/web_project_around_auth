@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
 import validator from "validator";
 
-import Popup from '../Main/components/Popup/Popup.jsx';
+import Popup from '../Main/Popup/Popup.jsx';
 
 import { PopupContext } from '../../contexts/PopupContext.js';
 
@@ -15,7 +15,7 @@ export default function RegisterForm({onUserRegister}) {
 
   function onSubmit(data) {
     const {password, email} = data;
-    onUserRegister({password, email})
+    onUserRegister({password, email});
   }
 
   return (
@@ -62,7 +62,7 @@ export default function RegisterForm({onUserRegister}) {
           />
 
           <ErrorMessage errors={errors} name="password" render={({ message }) => <p className='form__input-error form__input-error_password'>{message}</p>} />
-      </div>
+        </div>
         <button
           className="form__submit-button register-form__submit-button"
           type="submit"

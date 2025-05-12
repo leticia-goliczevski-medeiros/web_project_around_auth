@@ -1,13 +1,13 @@
-import '../../../../blocks/header.css';
+import '../../../blocks/header.css';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import menuIcon from '../../../../images/menu.svg';
-import closeIcon from '../../../../images/small-close-icon.png';
+import menuIcon from '../../../images/menu.svg';
+import closeIcon from '../../../images/small-close-icon.png';
 
-import { UserEmailContext } from '../../../../contexts/UserEmailContext';
-import { IsMenuOpenContext } from '../../../../contexts/IsMenuOpenContext';
-import { IsLoggedInContext } from '../../../../contexts/IsLoggedInContext';
+import { UserEmailContext } from '../../../contexts/UserEmailContext';
+import { IsMenuOpenContext } from '../../../contexts/IsMenuOpenContext';
+import { IsLoggedInContext } from '../../../contexts/IsLoggedInContext';
 
 export default function UserInfo() {
   const { userEmail } = useContext(UserEmailContext);
@@ -34,9 +34,8 @@ export default function UserInfo() {
         <img onClick={()=> setIsMenuOpen(!isMenuOpen)} className='header__menu' src={closeIcon} alt="Ícone para fechar o menu." />
         ) : (
         <img onClick={()=> setIsMenuOpen(!isMenuOpen)} className='header__menu' src={menuIcon} alt="Ícone do menu." />
-        )}
-      
+        )
+      }
     </>
-    
   )
 }

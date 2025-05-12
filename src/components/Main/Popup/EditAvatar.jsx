@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from "@hookform/error-message";
 import validator from "validator";
 
-import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
-import { PopupContext } from "../../../../../contexts/PopupContext";
+import { CurrentUserContext } from "../../../contexts/CurrentUserContext";
+import { PopupContext } from "../../../contexts/PopupContext";
 
-import { getTokenFromLocalStorage } from "../../../../../utils/getToken";
+import { getTokenFromLocalStorage } from "../../../utils/getToken";
 
 export default function EditAvatar() {
   const { handleAvatarUpdate } = useContext(CurrentUserContext); 
