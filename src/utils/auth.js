@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://web-project-api-full-u9bq.onrender.com";
 
 function login({password, email}) {
   return fetch(`${BASE_URL}/signin`, {

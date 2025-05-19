@@ -129,7 +129,7 @@ class API {
 export const api = new API({
   makeRequest: async (endpoint, requestOptions)=> {
     try {
-      const res = await fetch(`http://localhost:3000/${endpoint}`, requestOptions);
+      const res = await fetch(`https://web-project-api-full-u9bq.onrender.com/${endpoint}`, requestOptions);
 
       if (res.ok) {
         return res.json();
